@@ -93,3 +93,45 @@ def update_user(request):
     
 # different dashboards for each type of user
 # dash shows the two func each user has
+
+def new_appr(request):
+    # if form was submitted
+    if request.method == "POST":
+        form = ApprForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Appraisal Recorded")
+    else:
+        form = ApprForm
+    
+    return render(request, 'NewAppr.html', {'form':form})
+
+def disp_appr(request):
+    
+    apprs=[]
+    qs = appraisal.objects.all()
+    for i in qs:
+        apprs.append(i)
+    
+    return render(request, 'DispAppr.html', {'apprs':apprs})
+
+def new_remk(request):
+    # if form was submitted
+    if request.method == "POST":
+        form = RemkForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return HttpResponse("Remark Added")
+    else:
+        form = RemkForm
+    
+    return render(request, 'NewRemk.html', {'form':form})
+
+def disp_remk(request):
+    
+    remks=[]
+    qs = remarks.objects.all()
+    for i in qs:
+        remks.append(i)
+    
+    return render(request, 'DispRemk.html', {'remks':remks})

@@ -10,4 +10,8 @@ urlpatterns = [
     path("newproj", views.new_proj, name="new_proj"),
     path("disproj", views.disp_proj, name="disp_proj"),
     path("update", views.update_user, name="update_user"),
+    path("newappr", views.new_appr, name="new_appr"),
+    path("dispappr", views.disp_appr, name="disp_appr"),
+    path("newremk", views.new_remk, name="new_remk"),
+    path("dispremk", views.disp_remk, name="disp_remk"),
     ]
