@@ -20,3 +20,4 @@ class projects(models.Model):
     Project_ID = models.CharField(max_length=10)
     Deadline = models.DateField()
     No_of_Members = models.CharField(max_length=3)
+

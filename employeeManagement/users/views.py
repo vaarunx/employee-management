@@ -5,6 +5,7 @@ from .forms import *
 from .models import *
 from django import forms
 from django.db import models
+import sqlite3
 
 # Create your views here.
 
@@ -68,6 +69,27 @@ def disp_proj(request):
     
     return render(request, 'DispProj.html', {'projs':projs})
 
-
+def update_user(request):
+    # if form was submitted
+    if request.method == "POST":
+        form = UpdateForm(request.POST)
+        if form.is_valid():
+            #sql stuff
+            #usn = request.user.username
+            usn = 'jyang'
+            name = request.POST['Name']
+            email = request.POST['Email']
+            age = request.POST['Age']
+            conn = sqlite3.connect("db.sqlite3")
+            curr = conn.cursor()
+            conn.execute("UPDATE users_myuser SET Name=?, Email=?, Age=? WHERE Username=?", (name,email,age,usn))
+            conn.commit()
+            conn.close()
+            return HttpResponse("User Updated")
+    else:
+        form = UpdateForm
+    
+    return render(request, 'UpdateUsers.html', {'form':form})
+    
 # different dashboards for each type of user
 # dash shows the two func each user has

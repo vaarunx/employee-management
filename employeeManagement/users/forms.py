@@ -31,3 +31,9 @@ class ProjForm(forms.ModelForm):
             'Deadline': forms.DateInput(attrs={'class': 'form-control'}),
             'No_of_Members': forms.TextInput(attrs={'class':'form-control'}),
             }
+
+class UpdateForm(forms.Form):
+    
+    Name = forms.CharField(label='Updated Name', max_length=25)
+    Email = forms.EmailField(label='Updated Email', max_length=100)
+    Age = forms.CharField(label='Updated Age', max_length=2)
