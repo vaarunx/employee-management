@@ -5,7 +5,7 @@ Our application aims to provide a simple way of user management in a enterprise.
 Technology Stack Used :
 
 Python
-HTML, CSS, BootStrap
-Django Framework
-Crispy Forms
-SQLite
+HTML, CSS, BootStrap,
+Django Framework,
+Crispy Forms,
+SQLite,
