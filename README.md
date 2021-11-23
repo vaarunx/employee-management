@@ -8,4 +8,4 @@ Python
 HTML, CSS, BootStrap
 Django Framework
 Crispy Forms
-SQL
+SQLite
