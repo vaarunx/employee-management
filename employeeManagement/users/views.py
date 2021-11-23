@@ -10,7 +10,7 @@ import sqlite3
 # Create your views here.
 
 def index(request):
-    return HttpResponse("Default Page - Users App")
+    return render(request,'home.html')
 
 def signup_user(request):
     # if form was submitted
