@@ -8,13 +8,19 @@
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-uWxY/CJNBR+1zjPWmfnSnVxwRheevXITnMqoEIeG1LJrdI0GlVs/9cVSyPYXdcSF" crossorigin="anonymous">
 
-    <title>Hello, world!</title>
+    <title>Delete Project</title>
   </head>
   <body>
-    <h1>Hello, world!</h1>
-
+    <center><h3>Delete Project</h3></center>
     <!-- Option 1: Bootstrap Bundle with Popper -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-kQtW33rZJAHjgefvhyyzcGF3C5TFyBQBA13V1RKPf4uH+bwyzQxZ6CmMZHmNBEfJ" crossorigin="anonymous"></script>
-
+          <br><br>
+          <form action="delproj" method="post" id="DelprojForm">
+            <div class="form-group">
+              Project ID: <input type="text" name="projno" id="projno" class="form-control bg-warning"/>
+            </div>
+            <br>
+            <center><input class="btn btn-primary" type="submit" value="Submit"></center>
+        </form>
   </body>
 </html>
