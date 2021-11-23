@@ -1,6 +1,8 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.http import HttpResponseRedirect, HttpResponse
 from django.views.decorators.csrf import csrf_exempt
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.models import User
 from .forms import *
 from .models import *
 from django import forms
@@ -8,7 +10,10 @@ from django.db import models
 import sqlite3
 
 # Create your views here.
-
+def get_role(usn):
+    qs = myuser.objects.all().filter(Username = usn)
+    return qs[0].Role
+    
 def index(request):
     return render(request,'home.html')
 
@@ -17,8 +22,11 @@ def signup_user(request):
     if request.method == "POST":
         form = UserForm(request.POST)
         if form.is_valid():
+            user = User.objects.create_user(request.POST['Username'], email=request.POST['Email'], password=request.POST['Password'])
+            user.first_name = request.POST['Name']
+            user.save()
             form.save()
-            return HttpResponse("User Created")
+            return redirect("/")
     else:
         form = UserForm
     
@@ -29,10 +37,12 @@ def disp_users(request):
     users=[]
     qs = myuser.objects.all()
     for i in qs:
-        users.append(i)
+        if i.Username is not "":
+            users.append(i)
     
     return render(request, 'DispUsers.html', {'users':users})
 
+@csrf_exempt
 def login_user(request):
     
     cand_usn = request.POST['UN']
@@ -40,9 +50,27 @@ def login_user(request):
     user = authenticate(request, username = cand_usn, password = cand_pwd)
     if user is not None:
         login(request, user)
-        return redirect('/dashboard')
+        #retreive role and redirect
+        usr_role = get_role(request.user.username)
+        if(usr_role=="admin"):
+            return redirect("/admindash")
+        elif(usr_role=="HR"):
+            return redirect("/hrdash")
+        elif(usr_role=="Employee"):
+            return redirect("/empdash")
+        else:
+            return HttpResponse('Invalid Role')
     else:
         return redirect("/")
+
+def admin_dash(request):
+    return render(request,'AdminDash.html')
+
+def hr_dash(request):
+    return render(request,'HRDash.html')
+
+def emp_dash(request):
+    return render(request,'EmpDash.html')
 
 def logout_user(request):
     logout(request)
@@ -54,7 +82,7 @@ def new_proj(request):
         form = ProjForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("Project Created")
+            return redirect("/disproj")
     else:
         form = ProjForm
     
@@ -75,8 +103,7 @@ def update_user(request):
         form = UpdateForm(request.POST)
         if form.is_valid():
             #sql stuff
-            #usn = request.user.username
-            usn = 'jyang'
+            usn = request.user.username
             name = request.POST['Name']
             email = request.POST['Email']
             age = request.POST['Age']
@@ -85,11 +112,36 @@ def update_user(request):
             conn.execute("UPDATE users_myuser SET Name=?, Email=?, Age=? WHERE Username=?", (name,email,age,usn))
             conn.commit()
             conn.close()
-            return HttpResponse("User Updated")
+            return redirect("/display")
     else:
         form = UpdateForm
     
     return render(request, 'UpdateUsers.html', {'form':form})
+
+def admin_update(request):
+    # if form was submitted
+    if request.method == "POST":
+        form = ADUpdateForm(request.POST)
+        if form.is_valid():
+            #sql stuff
+            usn = request.user.username
+            name = request.POST['Name']
+            email = request.POST['Email']
+            age = request.POST['Age']
+            desig = request.POST['Designation']
+            role = request.POST['Role']
+            empno = request.POST['EmployeeNo']
+
+            conn = sqlite3.connect("db.sqlite3")
+            curr = conn.cursor()
+            conn.execute("UPDATE users_myuser SET Name=?, Email=?, Age=?, Designation=?, Role=?, EmployeeNo=? WHERE Username=?", (name,email,age,desig,role,empno,usn))
+            conn.commit()
+            conn.close()
+            return redirect("/display")
+    else:
+        form = ADUpdateForm
+    
+    return render(request, 'AdminUpdate.html', {'form':form})
     
 # different dashboards for each type of user
 # dash shows the two func each user has
@@ -100,7 +152,7 @@ def new_appr(request):
         form = ApprForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("Appraisal Recorded")
+            return redirect("/dispappr")
     else:
         form = ApprForm
     
@@ -121,7 +173,7 @@ def new_remk(request):
         form = RemkForm(request.POST)
         if form.is_valid():
             form.save()
-            return HttpResponse("Remark Added")
+            return redirect("/dispremk")
     else:
         form = RemkForm
     
@@ -135,3 +187,14 @@ def disp_remk(request):
         remks.append(i)
     
     return render(request, 'DispRemk.html', {'remks':remks})
+
+def del_proj(request):
+    
+    
+    return redirect("/disproj")
+
+def del_emp(request):
+    
+    
+    return redirect("/display")    
+    
