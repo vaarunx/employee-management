@@ -24,7 +24,9 @@ urlpatterns = [
     path("delprojform",views.del_proj_form, name='del_proj_form'),
     path("delproj",views.del_proj,name='del_proj'),
     path("delemp",views.del_emp,name='del_emp'),
-    path("resetPassword/" , auth_views.PasswordResetView.as_view(template_name = 'passwordReset.html')),
-    path("resetPassword/success/" , auth_views.PasswordResetDoneView.as_view(template_name = 'passwordResetSuccess.html')),
-    path("resetPassword/confirm/<uidb64>/<token>" , auth_views.PasswordResetConfirmView.as_view(template_name = 'passwordResetConfirm.html')),
+    path("resetPassword/" , auth_views.PasswordResetView.as_view(template_name = 'passwordReset.html') , name = "password_reset"),
+    path("resetPassword/success/" , auth_views.PasswordResetDoneView.as_view(template_name = 'passwordResetSuccess.html') ,name = "password_reset_done" ),
+    path("resetPassword/confirm/<uidb64>/<token>" , auth_views.PasswordResetConfirmView.as_view(template_name = 'passwordResetConfirm.html') , name = "password_reset_confirm"),
+    path("resetPassword/confirm/" , auth_views.PasswordResetCompleteView.as_view(template_name = 'passwordResetComplete.html') , name = "password_reset_complete"),
+
     ]
