@@ -31,9 +31,9 @@ class ProjForm(forms.ModelForm):
             }
 
 class UpdateForm(forms.Form):
-    Name = forms.CharField(label='Updated Name', max_length=25)
-    Email = forms.EmailField(label='Updated Email', max_length=100)
-    Age = forms.CharField(label='Updated Age', max_length=2)
+    Name = forms.CharField(label='Updated Name', max_length=25, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    Email = forms.EmailField(label='Updated Email', max_length=100, widget=forms.TextInput(attrs={'class': 'form-control'}))
+    Age = forms.CharField(label='Updated Age', max_length=2, widget=forms.TextInput(attrs={'class': 'form-control'}))
     
 class ApprForm(forms.ModelForm):
     class Meta:
