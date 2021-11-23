@@ -28,6 +28,10 @@ class appraisal(myuser):
     date_of_appr = models.DateField()
     magr_id = models.CharField(max_length=15)
 
+
+    def __str__(self):
+        return f'{self.appr_no}'
+
 class remarks(myuser):
     #extends myuser
     remk_no = models.CharField(max_length=6)
